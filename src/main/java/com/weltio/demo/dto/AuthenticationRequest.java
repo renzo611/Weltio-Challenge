@@ -31,7 +31,6 @@ public class AuthenticationRequest {
     }
     public static Users mapToEntity(AuthenticationRequest userDto){
         Users users = new Users();
-        users.setPassword(userDto.getPassword());
         users.setName(userDto.getName());
         users.setEmail(userDto.getEmail());
         return users;

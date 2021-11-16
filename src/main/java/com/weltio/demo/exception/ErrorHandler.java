@@ -11,5 +11,12 @@ public class ErrorHandler {
     public ResponseEntity<?> handleDataAlreadyExistException(DataAlreadyExistException e){
         return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
-
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<String> invalidCredentialsException(InvalidCredentialsException e){
+        return new ResponseEntity<>(e.getMessage(),HttpStatus.FORBIDDEN);
+    }
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> notFoundException(NotFoundException e){
+        return new ResponseEntity<>(e.getMessage(),HttpStatus.NOT_FOUND);
+    }
 }
