@@ -1,6 +1,7 @@
 package com.weltio.demo.service.impl;
 
 import com.weltio.demo.dto.AuthenticationRequest;
+import com.weltio.demo.dto.JwtTokenDto;
 import com.weltio.demo.dto.UserLoginRequest;
 import com.weltio.demo.exception.DataAlreadyExistException;
 import com.weltio.demo.exception.InvalidCredentialsException;
@@ -38,18 +39,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String authenticate(UserLoginRequest userDto) throws NotFoundException, InvalidCredentialsException {
+    public JwtTokenDto authenticate(UserLoginRequest userDto) throws NotFoundException, InvalidCredentialsException {
         Users user = userRepository.findByEmail(userDto.getEmail());
         UserDetails userDetails;
         if(user == null) {
             throw new NotFoundException("The user doesn't exist");
-        }else if(passwordEncoder.matches(userDto.getPassword(),user.getPassword())){
+        }else if(!passwordEncoder.matches(userDto.getPassword(),user.getPassword())){
             throw new InvalidCredentialsException("The data entered is invalid.");
         }
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(),user.getPassword()));
+        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getEmail(), userDto.getPassword()));
         userDetails = (UserDetails) auth.getPrincipal();
         final String jwt = jwtTokenUtil.generateToken(userDetails);
-        return jwt;
+        return new JwtTokenDto(jwt);
     }
 
 

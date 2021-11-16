@@ -29,21 +29,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     String[] publicEndpoint = {"/auth/singup", "/auth/login"};
     String[] userAuthorizedEndpoint = {
-            "/users",
-            "testimonials/",
-            "/news/{id}",
-            "/activities/{id}",
-            "/categories/{id}",
-            "slides/{id}"
     };
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
-                .antMatchers(userAuthorizedEndpoint).authenticated()
-                .antMatchers(HttpMethod.POST, userAuthorizedEndpoint).authenticated()
                 .antMatchers(publicEndpoint).permitAll()
+                .antMatchers(userAuthorizedEndpoint).permitAll()
+                .antMatchers(HttpMethod.POST, userAuthorizedEndpoint).permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
@@ -65,8 +59,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return super.userDetailsService();
-    }
 }

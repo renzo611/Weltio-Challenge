@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
-public class JwtTokenUtil implements Serializable {
+public class JwtTokenUtil {
     @Autowired
     UserRepository userRepository;
 
@@ -42,9 +42,11 @@ public class JwtTokenUtil implements Serializable {
     private Claims getAllClaimsFromToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
     }
+
     public Long extractId(String token) {
         return Long.valueOf(getClaimFromToken(token, Claims::getId));
     }
+
     private Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
@@ -55,6 +57,7 @@ public class JwtTokenUtil implements Serializable {
 
         return doGenerateToken(claims, userDetails.getUsername());
     }
+
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims).setSubject(subject)
@@ -66,7 +69,6 @@ public class JwtTokenUtil implements Serializable {
 
     public Boolean validateToken(String token, Users user) {
         final Long id = Long.valueOf(extractId(token));
-        return ((id == user.getId() && !isTokenExpired(token))
-                && !isTokenExpired(token));
+        return ((id == user.getId() && !isTokenExpired(token)));
     }
 }
