@@ -18,4 +18,5 @@ public class UserServiceImpl implements UserService {
             throw new DataAlreadyExistException("Email already exist.");
         return AuthenticationRequest.mapToDto(userRepository.save(AuthenticationRequest.mapToEntity(user)));
     }
+
 }
