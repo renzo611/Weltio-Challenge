@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -15,6 +16,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class AuthenticationRequest {
     @NotBlank(message = "Email is mandatory")
+    @Email(message = "This field must be an email")
     private String email;
     @NotBlank(message = "Password is mandatory")
     @Size(min = 6,message = "The password must be at least 6 characters long")

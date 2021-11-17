@@ -3,10 +3,7 @@ package com.weltio.demo.mapper;
 import com.weltio.demo.dto.ProductFiltersDto;
 import com.weltio.demo.model.Product;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 public class ProductMapper {
     public static Set<ProductFiltersDto> mapListToDto(List<Product> products){
@@ -18,18 +15,20 @@ public class ProductMapper {
                 for (ProductFiltersDto a: newList) {
                     if(a.getName().toUpperCase().equals(p.getName().toUpperCase())){
                         a.setCuantity(a.getCuantity() + p.getCuantity());
+                        a.setTotalprice(a.getTotalprice() + (p.getCuantity() * p.getPrice()));
                     }
                 }
             }else{
                 newList.add(productDto);
             }
         }
+
         return newList;
     }
 
     private static ProductFiltersDto mapToDtoFilter(Product product){
         ProductFiltersDto newProduct = new ProductFiltersDto();
-        newProduct.setPrice(product.getPrice());
+        newProduct.setTotalprice(product.getPrice() * product.getCuantity());
         newProduct.setName(product.getName());
         newProduct.setCuantity(product.getCuantity());
         return newProduct;

@@ -11,7 +11,7 @@ import java.util.Objects;
 public class ProductFiltersDto {
     private String name;
     private Long cuantity;
-    private float price;
+    private float Totalprice;
 
     @Override
     public boolean equals(Object o) {
