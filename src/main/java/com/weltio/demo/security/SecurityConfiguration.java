@@ -28,16 +28,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private UserDetailsService userDetailsService;
 
     String[] publicEndpoint = {"/auth/singup", "/auth/login"};
-    String[] userAuthorizedEndpoint = {
-    };
+    String[] userAuthorizedEndpoint = {"/order","/order/{id}"};
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
         http.authorizeRequests()
                 .antMatchers(publicEndpoint).permitAll()
-                .antMatchers(userAuthorizedEndpoint).permitAll()
-                .antMatchers(HttpMethod.POST, userAuthorizedEndpoint).permitAll()
+                .antMatchers(userAuthorizedEndpoint).authenticated()
+                .antMatchers(HttpMethod.POST, userAuthorizedEndpoint).authenticated()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
