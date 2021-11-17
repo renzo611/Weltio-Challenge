@@ -13,18 +13,4 @@ import java.util.Set;
 public class OrderDto {
 
     private Set<Product> products = new HashSet<>();
-
-    public static Order mapToEntity(OrderDto order){
-        Order newOrder = new Order();
-        newOrder.setProducts(order.getProducts());
-        return newOrder;
-    }
-
-    public static OrderDto mapToDto(Order order){
-        OrderDto newOrder = new OrderDto();
-        newOrder.setProducts(order.getProducts());
-        return newOrder;
-    }
-
-
 }

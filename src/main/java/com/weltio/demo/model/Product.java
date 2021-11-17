@@ -2,20 +2,16 @@ package com.weltio.demo.model;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Locale;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
-@SQLDelete(sql = "UPDATE product SET deleted = true WHERE id = ?")
-@Where(clause = "deleted=false")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,7 +27,13 @@ public class Product {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    private boolean deleted = Boolean.FALSE;
+    @Temporal(TemporalType.DATE)
+    private Date creationTime;
+
+    @PrePersist
+    private void initDate(){
+        creationTime = new Date();
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -41,4 +43,8 @@ public class Product {
         return this.name.toUpperCase().equals(((Product) o).getName().toUpperCase());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }
