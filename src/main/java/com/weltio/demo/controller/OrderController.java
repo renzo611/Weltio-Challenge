@@ -15,17 +15,17 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping
-    public ResponseEntity<?> registerOrder(@RequestBody OrderDto orderDto){
+    public ResponseEntity<OrderDto> registerOrder(@RequestBody OrderDto orderDto){
         return new ResponseEntity<>(orderService.save(orderDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteOrder(@PathVariable Long id) throws NotFoundException {
+    public ResponseEntity<String> deleteOrder(@PathVariable Long id) throws NotFoundException {
         return new ResponseEntity<>(orderService.delete(id),HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateOrder(@PathVariable Long id, @RequestBody OrderDto order) throws NotFoundException {
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable Long id, @RequestBody OrderDto order) throws NotFoundException {
         return new ResponseEntity<>(orderService.update(id,order),HttpStatus.OK);
     }
 }

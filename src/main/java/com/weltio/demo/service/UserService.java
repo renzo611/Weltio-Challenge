@@ -8,6 +8,7 @@ import com.weltio.demo.exception.DataAlreadyExistException;
 import com.weltio.demo.exception.InvalidCredentialsException;
 import com.weltio.demo.exception.NotFoundException;
 import org.springframework.security.core.Authentication;
+import org.springframework.validation.BindingResult;
 
 public interface UserService {
     public AuthenticationResponse save(AuthenticationRequest user) throws DataAlreadyExistException;
